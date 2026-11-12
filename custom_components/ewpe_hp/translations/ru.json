@@ -1,0 +1,146 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Аккаунт Gree+",
+        "description": "Войдите аккаунтом приложения Gree+, в которое добавлен тепловой насос. Регион — тот, что выбран в приложении. Пароль не сохраняется: хранится только хеш, которым входит облако.",
+        "data": {
+          "region": "Регион",
+          "username": "Эл. почта",
+          "password": "Пароль"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Войти снова",
+        "description": "Облако Gree+ больше не принимает сохранённый вход. Введите пароль ещё раз.",
+        "data": {
+          "username": "Эл. почта",
+          "password": "Пароль"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Облако Gree+ не приняло эту почту или пароль, либо аккаунт в другом регионе.",
+      "cannot_connect": "Нет связи с облаком Gree+.",
+      "no_units": "В этом аккаунте Gree+ нет устройств."
+    },
+    "abort": {
+      "already_configured": "Этот аккаунт Gree+ уже добавлен.",
+      "reauth_successful": "Вход выполнен снова.",
+      "wrong_account": "Это другой аккаунт Gree+."
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "europe": "Европа",
+        "russia": "Россия",
+        "middle_east": "Ближний Восток",
+        "india": "Индия",
+        "east_south_asia": "Восточная и Южная Азия",
+        "australia": "Австралия",
+        "north_america": "Северная Америка",
+        "south_america": "Южная и Латинская Америка",
+        "china": "Континентальный Китай"
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "power": {
+        "name": "Питание"
+      },
+      "quiet": {
+        "name": "Тихий режим"
+      },
+      "fast_hot_water": {
+        "name": "Быстрый нагрев воды"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Режим",
+        "state": {
+          "heat": "Отопление",
+          "hot_water": "Горячая вода",
+          "cool_hot_water": "Охлаждение + горячая вода",
+          "heat_hot_water": "Отопление + горячая вода",
+          "cool": "Охлаждение"
+        }
+      },
+      "heat_priority": {
+        "name": "Приоритет при отоплении + ГВС",
+        "state": {
+          "heating": "Отопление",
+          "hot_water": "Горячая вода"
+        }
+      },
+      "cool_priority": {
+        "name": "Приоритет при охлаждении + ГВС",
+        "state": {
+          "cooling": "Охлаждение",
+          "hot_water": "Горячая вода"
+        }
+      }
+    },
+    "number": {
+      "heating_water_setpoint": {
+        "name": "Уставка воды отопления"
+      },
+      "cooling_water_setpoint": {
+        "name": "Уставка воды охлаждения"
+      },
+      "room_heating_setpoint": {
+        "name": "Уставка комнаты (отопление)"
+      },
+      "room_cooling_setpoint": {
+        "name": "Уставка комнаты (охлаждение)"
+      }
+    },
+    "water_heater": {
+      "tank": {
+        "name": "Бак горячей воды"
+      }
+    },
+    "sensor": {
+      "water_outlet": {
+        "name": "Вода на выходе"
+      },
+      "water_inlet": {
+        "name": "Вода на входе"
+      },
+      "heat_pump_outlet": {
+        "name": "Выход теплового насоса"
+      },
+      "tank_temperature": {
+        "name": "Температура бака"
+      },
+      "room_temperature": {
+        "name": "Температура в комнате"
+      },
+      "error_code": {
+        "name": "Код ошибки"
+      }
+    },
+    "binary_sensor": {
+      "tank_heater": {
+        "name": "ТЭН бака"
+      },
+      "heater_1": {
+        "name": "Электронагреватель 1"
+      },
+      "heater_2": {
+        "name": "Электронагреватель 2"
+      },
+      "frost_protection": {
+        "name": "Защита от замерзания"
+      },
+      "system_frost_protection": {
+        "name": "Защита системы от замерзания"
+      },
+      "problem": {
+        "name": "Ошибка"
+      }
+    }
+  }
+}

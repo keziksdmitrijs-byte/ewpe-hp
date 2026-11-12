@@ -1,0 +1,146 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Gree+ account",
+        "description": "Sign in with the account of the Gree+ app your heat pump is added to. The region is the one chosen in the app. The password is not stored: only the hash the cloud signs in with.",
+        "data": {
+          "region": "Region",
+          "username": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sign in again",
+        "description": "The Gree+ cloud no longer accepts the saved sign-in. Enter the password again.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "The Gree+ cloud refused this email or password, or the account is in another region.",
+      "cannot_connect": "The Gree+ cloud cannot be reached.",
+      "no_units": "There are no units in this Gree+ account."
+    },
+    "abort": {
+      "already_configured": "This Gree+ account is already added.",
+      "reauth_successful": "Signed in again.",
+      "wrong_account": "This is a different Gree+ account."
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "europe": "Europe",
+        "russia": "Russia",
+        "middle_east": "Middle East",
+        "india": "India",
+        "east_south_asia": "East and South Asia",
+        "australia": "Australia",
+        "north_america": "North America",
+        "south_america": "South and Latin America",
+        "china": "China mainland"
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "power": {
+        "name": "Power"
+      },
+      "quiet": {
+        "name": "Quiet"
+      },
+      "fast_hot_water": {
+        "name": "Fast hot water"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Mode",
+        "state": {
+          "heat": "Heat",
+          "hot_water": "Hot water",
+          "cool_hot_water": "Cool + hot water",
+          "heat_hot_water": "Heat + hot water",
+          "cool": "Cool"
+        }
+      },
+      "heat_priority": {
+        "name": "Heat + hot water priority",
+        "state": {
+          "heating": "Heating",
+          "hot_water": "Hot water"
+        }
+      },
+      "cool_priority": {
+        "name": "Cool + hot water priority",
+        "state": {
+          "cooling": "Cooling",
+          "hot_water": "Hot water"
+        }
+      }
+    },
+    "number": {
+      "heating_water_setpoint": {
+        "name": "Heating water setpoint"
+      },
+      "cooling_water_setpoint": {
+        "name": "Cooling water setpoint"
+      },
+      "room_heating_setpoint": {
+        "name": "Room heating setpoint"
+      },
+      "room_cooling_setpoint": {
+        "name": "Room cooling setpoint"
+      }
+    },
+    "water_heater": {
+      "tank": {
+        "name": "Hot water tank"
+      }
+    },
+    "sensor": {
+      "water_outlet": {
+        "name": "Water outlet"
+      },
+      "water_inlet": {
+        "name": "Water inlet"
+      },
+      "heat_pump_outlet": {
+        "name": "Heat pump outlet"
+      },
+      "tank_temperature": {
+        "name": "Tank temperature"
+      },
+      "room_temperature": {
+        "name": "Room temperature"
+      },
+      "error_code": {
+        "name": "Error code"
+      }
+    },
+    "binary_sensor": {
+      "tank_heater": {
+        "name": "Tank electric heater"
+      },
+      "heater_1": {
+        "name": "Electric heater 1"
+      },
+      "heater_2": {
+        "name": "Electric heater 2"
+      },
+      "frost_protection": {
+        "name": "Frost protection"
+      },
+      "system_frost_protection": {
+        "name": "System frost protection"
+      },
+      "problem": {
+        "name": "Error"
+      }
+    }
+  }
+}

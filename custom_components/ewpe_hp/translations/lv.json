@@ -1,0 +1,146 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Gree+ konts",
+        "description": "Pierakstieties ar Gree+ lietotnes kontu, kurā pievienots siltumsūknis. Reģions ir tas, kas izvēlēts lietotnē. Parole netiek saglabāta: glabājas tikai jaucējvērtība, ar kuru pierakstās mākonis.",
+        "data": {
+          "region": "Reģions",
+          "username": "E-pasts",
+          "password": "Parole"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Pierakstīties vēlreiz",
+        "description": "Gree+ mākonis vairs nepieņem saglabāto pierakstīšanos. Ievadiet paroli vēlreiz.",
+        "data": {
+          "username": "E-pasts",
+          "password": "Parole"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Gree+ mākonis nepieņēma šo e-pastu vai paroli, vai arī konts ir citā reģionā.",
+      "cannot_connect": "Nav savienojuma ar Gree+ mākoni.",
+      "no_units": "Šajā Gree+ kontā nav ierīču."
+    },
+    "abort": {
+      "already_configured": "Šis Gree+ konts jau ir pievienots.",
+      "reauth_successful": "Pierakstīšanās atjaunota.",
+      "wrong_account": "Tas ir cits Gree+ konts."
+    }
+  },
+  "selector": {
+    "region": {
+      "options": {
+        "europe": "Eiropa",
+        "russia": "Krievija",
+        "middle_east": "Tuvie Austrumi",
+        "india": "Indija",
+        "east_south_asia": "Austrumāzija un Dienvidāzija",
+        "australia": "Austrālija",
+        "north_america": "Ziemeļamerika",
+        "south_america": "Dienvidamerika un Latīņamerika",
+        "china": "Ķīnas kontinentālā daļa"
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "power": {
+        "name": "Barošana"
+      },
+      "quiet": {
+        "name": "Klusais režīms"
+      },
+      "fast_hot_water": {
+        "name": "Ātrā ūdens sildīšana"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Režīms",
+        "state": {
+          "heat": "Apkure",
+          "hot_water": "Karstais ūdens",
+          "cool_hot_water": "Dzesēšana + karstais ūdens",
+          "heat_hot_water": "Apkure + karstais ūdens",
+          "cool": "Dzesēšana"
+        }
+      },
+      "heat_priority": {
+        "name": "Prioritāte apkurē + KŪ",
+        "state": {
+          "heating": "Apkure",
+          "hot_water": "Karstais ūdens"
+        }
+      },
+      "cool_priority": {
+        "name": "Prioritāte dzesēšanā + KŪ",
+        "state": {
+          "cooling": "Dzesēšana",
+          "hot_water": "Karstais ūdens"
+        }
+      }
+    },
+    "number": {
+      "heating_water_setpoint": {
+        "name": "Apkures ūdens iestatījums"
+      },
+      "cooling_water_setpoint": {
+        "name": "Dzesēšanas ūdens iestatījums"
+      },
+      "room_heating_setpoint": {
+        "name": "Telpas iestatījums (apkure)"
+      },
+      "room_cooling_setpoint": {
+        "name": "Telpas iestatījums (dzesēšana)"
+      }
+    },
+    "water_heater": {
+      "tank": {
+        "name": "Karstā ūdens tvertne"
+      }
+    },
+    "sensor": {
+      "water_outlet": {
+        "name": "Ūdens izejā"
+      },
+      "water_inlet": {
+        "name": "Ūdens ieejā"
+      },
+      "heat_pump_outlet": {
+        "name": "Siltumsūkņa izeja"
+      },
+      "tank_temperature": {
+        "name": "Tvertnes temperatūra"
+      },
+      "room_temperature": {
+        "name": "Telpas temperatūra"
+      },
+      "error_code": {
+        "name": "Kļūdas kods"
+      }
+    },
+    "binary_sensor": {
+      "tank_heater": {
+        "name": "Tvertnes elektriskais sildītājs"
+      },
+      "heater_1": {
+        "name": "Elektriskais sildītājs 1"
+      },
+      "heater_2": {
+        "name": "Elektriskais sildītājs 2"
+      },
+      "frost_protection": {
+        "name": "Aizsardzība pret salu"
+      },
+      "system_frost_protection": {
+        "name": "Sistēmas aizsardzība pret salu"
+      },
+      "problem": {
+        "name": "Kļūda"
+      }
+    }
+  }
+}

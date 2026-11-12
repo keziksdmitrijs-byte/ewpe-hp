@@ -1,0 +1,12 @@
+{
+  "domain": "ewpe_hp",
+  "name": "EWPE HP",
+  "codeowners": ["@keziksdmitrijs-byte"],
+  "config_flow": true,
+  "documentation": "https://github.com/keziksdmitrijs-byte/ewpe-hp",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/keziksdmitrijs-byte/ewpe-hp/issues",
+  "requirements": ["aiomqtt>=2.5.0"],
+  "version": "0.1.0"
+}
