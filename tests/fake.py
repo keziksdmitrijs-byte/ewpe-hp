@@ -23,6 +23,8 @@ PASSWORD = "secret-password"
 UID = 4242
 MAC = "c8f742a1b2c3"
 KEY = "Ab12Cd34Ef56Gh78"
+AC_MAC = "502cc6c73097"
+AC_KEY = "Zx98Yw76Vu54Ts32"
 
 
 class Versati:
@@ -90,11 +92,38 @@ class Versati:
         return {"t": "res", "r": 404}
 
 
+class AirCon(Versati):
+    """A GREE air conditioner on the same account; it knows nothing of water set points."""
+
+    def __init__(self, mac: str = AC_MAC, key: str = AC_KEY) -> None:
+        super().__init__(mac, key, "V3.0.0")
+        self.values = {
+            "Pow": 1,
+            "Mod": 1,
+            "SetTem": 24,
+            "TemUn": 0,
+            "TemRec": 0,
+            # newer modules add 40 to the room temperature
+            "TemSen": 66,
+            "WdSpd": 0,
+            "Tur": 0,
+            "Quiet": 0,
+            "SwUpDn": 0,
+            "SwingLfRig": 0,
+            "Lig": 1,
+            "Air": 0,
+            "Blo": 0,
+            "Health": 0,
+            "SwhSlp": 0,
+        }
+
+
 class Cloud:
     """The REST side of the cloud."""
 
     def __init__(self, unit: Versati) -> None:
         self.unit = unit
+        self.units: list[Versati] = [unit]
         self.token = "token-1"
         self.logins = 0
         self.gateway: tuple[str, int] | None = None
@@ -127,7 +156,7 @@ class Cloud:
             self._check(body, ["token", "uid", "homeId"])
             if not self._signed_in(body) or body["homeId"] != 77:
                 return {"r": 402}
-            unit = self.unit
+            names = {MAC: "Versati IV ", AC_MAC: "Office AC"}
             return {
                 "r": 200,
                 "rooms": [
@@ -135,14 +164,15 @@ class Cloud:
                         "devs": [
                             {
                                 "mac": unit.mac,
-                                "name": "Versati IV ",
+                                "name": names.get(unit.mac, unit.mac),
                                 "key": unit.key,
-                                "model": "GRS-CQ8.0Pd/NhG4-E",
+                                "model": "",
                                 "ver": unit.version,
                                 "online": 1,
                                 "pmac": "",
                                 "mid": "10001",
                             }
+                            for unit in self.units
                         ]
                     }
                 ],
@@ -226,9 +256,8 @@ class BrokerClient:
             self._queue.put_nowait(_Message(topic, json.dumps(message).encode()))
 
     async def publish(self, topic: str, payload: str, qos: int = 0) -> None:
-        unit = self._broker.cloud.unit
+        unit = next(known for known in self._broker.cloud.units if topic == f"request/{known.mac}")
         outer = json.loads(payload)
-        assert topic == f"request/{unit.mac}"
         assert outer["tcid"] == unit.mac and outer["uid"] == UID and outer["t"] == "pack"
         if self._broker.silent or not unit.online:
             return

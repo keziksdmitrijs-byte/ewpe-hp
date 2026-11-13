@@ -55,6 +55,24 @@
       },
       "fast_hot_water": {
         "name": "Fast hot water"
+      },
+      "quiet_mode": {
+        "name": "Quiet mode"
+      },
+      "xtra_fan": {
+        "name": "Xtra fan"
+      },
+      "fresh_air": {
+        "name": "Fresh air"
+      },
+      "panel_light": {
+        "name": "Panel light"
+      },
+      "turbo": {
+        "name": "Turbo"
+      },
+      "health_mode": {
+        "name": "Health mode"
       }
     },
     "select": {
@@ -140,6 +158,22 @@
       },
       "problem": {
         "name": "Error"
+      }
+    },
+    "climate": {
+      "air_conditioner": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "auto": "Auto",
+              "low": "Low",
+              "medium_low": "Medium low",
+              "medium": "Medium",
+              "medium_high": "Medium high",
+              "high": "High"
+            }
+          }
+        }
       }
     }
   }

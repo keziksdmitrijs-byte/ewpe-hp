@@ -85,6 +85,42 @@ COLUMNS: Final = (
     *STATES,
 )
 
+# what a unit is, told by its first answer: a Versati has a heating water set point, an air conditioner a room one
+HEAT_PUMP: Final = "heat_pump"
+AIR_CONDITIONER: Final = "air_conditioner"
+PROBE: Final = (HEAT_WATER_SET, "SetTem", "TemSen")
+
+# GREE air conditioners, as the Gree+ app sees them
+AC_SET: Final = "SetTem"
+AC_ROOM: Final = "TemSen"
+AC_FAN: Final = "WdSpd"
+AC_SWING_V: Final = "SwUpDn"
+AC_SWING_H: Final = "SwingLfRig"
+AC_COLUMNS: Final = (
+    POW,
+    MOD,
+    AC_SET,
+    UNIT,
+    "TemRec",
+    AC_ROOM,
+    AC_FAN,
+    "Tur",
+    QUIET,
+    AC_SWING_V,
+    AC_SWING_H,
+    "Lig",
+    "Air",
+    "Blo",
+    "Health",
+    "SwhSlp",
+)
+# Mod of an air conditioner
+AC_MODES: Final[dict[str, int]] = {"auto": 0, "cool": 1, "dry": 2, "fan_only": 3, "heat": 4}
+# WdSpd: auto, then five speeds
+AC_FANS: Final[dict[str, int]] = {"auto": 0, "low": 1, "medium_low": 2, "medium": 3, "medium_high": 4, "high": 5}
+# newer modules report the room temperature with 40 added
+AC_ROOM_OFFSET: Final = 40
+
 # Mod, as on the controller: the same numbers as the Versati Modbus table
 MODES: Final[dict[str, int]] = {
     "heat": 1,

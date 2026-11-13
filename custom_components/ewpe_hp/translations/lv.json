@@ -55,6 +55,24 @@
       },
       "fast_hot_water": {
         "name": "Ātrā ūdens sildīšana"
+      },
+      "quiet_mode": {
+        "name": "Klusais režīms"
+      },
+      "xtra_fan": {
+        "name": "Žāvēšana (X-Fan)"
+      },
+      "fresh_air": {
+        "name": "Svaigs gaiss"
+      },
+      "panel_light": {
+        "name": "Paneļa apgaismojums"
+      },
+      "turbo": {
+        "name": "Turbo"
+      },
+      "health_mode": {
+        "name": "Jonizācija"
       }
     },
     "select": {
@@ -140,6 +158,22 @@
       },
       "problem": {
         "name": "Kļūda"
+      }
+    },
+    "climate": {
+      "air_conditioner": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "auto": "Auto",
+              "low": "Zems",
+              "medium_low": "Zem vidēja",
+              "medium": "Vidējs",
+              "medium_high": "Virs vidēja",
+              "high": "Augsts"
+            }
+          }
+        }
       }
     }
   }

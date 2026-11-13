@@ -13,7 +13,19 @@ from homeassistant.exceptions import ConfigEntryAuthFailed, HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .cloud import AuthError, Cloud, CloudError, CloudUnit
-from .const import COLUMNS, COLUMNS_PER_REQUEST, DOMAIN, NOT_FITTED, SCAN_INTERVAL_SECONDS, TEMPERATURE_OFFSET
+from .const import (
+    AC_COLUMNS,
+    AIR_CONDITIONER,
+    COLUMNS,
+    COLUMNS_PER_REQUEST,
+    DOMAIN,
+    HEAT_PUMP,
+    HEAT_WATER_SET,
+    NOT_FITTED,
+    PROBE,
+    SCAN_INTERVAL_SECONDS,
+    TEMPERATURE_OFFSET,
+)
 from .link import GatewayLink, LinkError, MqttLink, over_mqtt, values_of
 
 _LOGGER = logging.getLogger(__name__)
@@ -55,8 +67,10 @@ class UnitCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self._account = account
         self.mqtt = over_mqtt(unit)
         self._proven = False
+        # heat pump or air conditioner, from the unit's first answer
+        self.kind: str | None = None
         # parameters this unit has never answered for are not asked again
-        self._columns = list(COLUMNS)
+        self._columns: list[str] = []
 
     @property
     def _link(self) -> MqttLink | GatewayLink:
@@ -91,6 +105,9 @@ class UnitCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         values: dict[str, Any] = {}
         answered = False
         try:
+            if self.kind is None:
+                self.kind = await self._probe()
+                self._columns = list(COLUMNS if self.kind == HEAT_PUMP else AC_COLUMNS)
             for start in range(0, len(self._columns), COLUMNS_PER_REQUEST):
                 part = self._columns[start : start + COLUMNS_PER_REQUEST]
                 answer = await self._ask({"t": "status", "cols": part})
@@ -109,6 +126,17 @@ class UnitCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 _LOGGER.debug("%s does not report %s", self.unit.name, missing)
                 self._columns = [name for name in self._columns if name in values]
         return values
+
+    async def _probe(self) -> str:
+        """A Versati answers with its heating water set point (20-60 °C), an air conditioner with a room one."""
+        answer = await self._ask({"t": "status", "cols": list(PROBE)})
+        if answer.get("t") != "dat":
+            raise UpdateFailed(f"{self.unit.name} answered without data")
+        values = values_of(answer)
+        water = values.get(HEAT_WATER_SET)
+        kind = HEAT_PUMP if isinstance(water, int) and water >= 5 else AIR_CONDITIONER if "SetTem" in values else HEAT_PUMP
+        _LOGGER.debug("%s is a %s", self.unit.name, kind)
+        return kind
 
     async def send(self, values: dict[str, Any]) -> None:
         """Sets parameters on the unit; what it has taken shows straight away."""

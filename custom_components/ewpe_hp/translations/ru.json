@@ -55,6 +55,24 @@
       },
       "fast_hot_water": {
         "name": "Быстрый нагрев воды"
+      },
+      "quiet_mode": {
+        "name": "Тихий режим"
+      },
+      "xtra_fan": {
+        "name": "Просушка (X-Fan)"
+      },
+      "fresh_air": {
+        "name": "Свежий воздух"
+      },
+      "panel_light": {
+        "name": "Подсветка панели"
+      },
+      "turbo": {
+        "name": "Турбо"
+      },
+      "health_mode": {
+        "name": "Ионизация"
       }
     },
     "select": {
@@ -140,6 +158,22 @@
       },
       "problem": {
         "name": "Ошибка"
+      }
+    },
+    "climate": {
+      "air_conditioner": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "auto": "Авто",
+              "low": "Низкая",
+              "medium_low": "Ниже средней",
+              "medium": "Средняя",
+              "medium_high": "Выше средней",
+              "high": "Высокая"
+            }
+          }
+        }
       }
     }
   }

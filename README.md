@@ -21,6 +21,8 @@
 | Датчики | Вода на выходе и входе, выход теплового насоса, бак, комната, код ошибки | `AllOutWatTem`, `AllInWatTem`, `HepOutWatTem`, `WatBoxTem`, `RmoHomTem`, `AllErr` |
 | Двоичные датчики | ТЭН бака, электронагреватели 1 и 2, защита от замерзания, наличие ошибки | `WatBoxElcHeRunSta`, `ElcHe1RunSta`, `ElcHe2RunSta`, `AnFrzzRunSta`, `SyAnFroRunSta` |
 
+**Кондиционеры GREE** из того же аккаунта Gree+ появляются как климатические устройства: выкл / авто / охлаждение / осушение / вентиляция / обогрев, температура 16–30 °C, скорость вентилятора (авто и пять ступеней), качание жалюзи, а также переключатели «Тихий режим», «Просушка (X-Fan)», «Свежий воздух», «Подсветка панели», «Турбо», «Ионизация». Насос это или кондиционер, интеграция определяет сама по первому ответу устройства.
+
 Сущности создаются только для тех параметров, которые насос действительно сообщает; датчик, которого нет (например, комнатный — он показывает −30 °C), не появляется.
 
 Насос опрашивается каждые 30 секунд. Изменения, о которых насос сообщает сам (через MQTT), видны сразу.
@@ -56,7 +58,7 @@ Home Assistant integration for **GREE Versati** air-to-water heat pumps through 
 
 > **Status: first release, not yet tried on a real unit.** The cloud protocol and the Versati parameters come from public research (see Credits); the integration is tested against a model of the cloud, its broker and the unit. If something is off on your unit, open an issue with the integration's diagnostics.
 
-**Entities:** power, mode (heat, hot water, cool + hot water, heat + hot water, cool), the hot water tank as a water heater, heating (20–60 °C) and cooling (5–25 °C) water setpoints, room setpoints, quiet mode, fast hot water, heat/cool + hot water priority, water outlet / inlet / heat pump outlet / tank / room temperatures, error code, electric heaters and frost protection running. Only parameters the unit reports get an entity. The unit is polled every 30 s; changes it reports itself over MQTT show at once.
+**Entities:** power, mode (heat, hot water, cool + hot water, heat + hot water, cool), the hot water tank as a water heater, heating (20–60 °C) and cooling (5–25 °C) water setpoints, room setpoints, quiet mode, fast hot water, heat/cool + hot water priority, water outlet / inlet / heat pump outlet / tank / room temperatures, error code, electric heaters and frost protection running. **GREE air conditioners** on the same Gree+ account show as climate entities (off / auto / cool / dry / fan / heat, 16–30 °C, auto and five fan speeds, swing) with quiet mode, X-fan, fresh air, panel light, turbo and health switches; whether a unit is a heat pump or an air conditioner is told by its first answer. Only parameters the unit reports get an entity. The unit is polled every 30 s; changes it reports itself over MQTT show at once.
 
 **Install:** add `https://github.com/keziksdmitrijs-byte/ewpe-hp` to HACS as a custom integration repository, install **EWPE HP**, restart, then add the integration and sign in with your Gree+ region, email and password.
 

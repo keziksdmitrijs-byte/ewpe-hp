@@ -5,7 +5,7 @@ from __future__ import annotations
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, HEAT_PUMP
 from .coordinator import EwpeConfigEntry, UnitCoordinator
 
 
@@ -27,10 +27,10 @@ class UnitEntity(CoordinatorEntity[UnitCoordinator]):
         )
 
 
-def reporting(entry: EwpeConfigEntry, *names: str) -> list[UnitCoordinator]:
-    """Units that report every one of these parameters."""
+def reporting(entry: EwpeConfigEntry, *names: str, kind: str = HEAT_PUMP) -> list[UnitCoordinator]:
+    """Units of this kind that report every one of these parameters."""
     return [
         coordinator
         for coordinator in entry.runtime_data.units
-        if coordinator.data is not None and all(name in coordinator.data for name in names)
+        if coordinator.data is not None and coordinator.kind == kind and all(name in coordinator.data for name in names)
     ]
