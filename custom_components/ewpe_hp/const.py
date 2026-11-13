@@ -35,6 +35,8 @@ MQTT_FROM_VERSION: Final = (3, 2)
 
 SCAN_INTERVAL_SECONDS: Final = 30
 REQUEST_TIMEOUT: Final = 10.0
+# a unit can take its time to answer through the broker
+MQTT_TIMEOUT: Final = 20.0
 # a module answers long status requests badly, so they go in parts
 COLUMNS_PER_REQUEST: Final = 12
 

@@ -44,6 +44,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: EwpeConfigEntry) -> bool
     entry.async_on_unload(account.mqtt.stop)
 
     for unit in units:
+        _LOGGER.debug("Unit %s", unit.summary())
         coordinator = UnitCoordinator(hass, entry, account, unit)
         await account.mqtt.add(unit, coordinator.reported)
         account.units.append(coordinator)

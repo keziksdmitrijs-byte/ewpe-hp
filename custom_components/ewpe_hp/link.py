@@ -21,7 +21,7 @@ from typing import Any
 import aiomqtt
 
 from .cloud import AuthError, Cloud, CloudError, CloudUnit, Gateway
-from .const import MQTT_FROM_VERSION, MQTT_PORT, REQUEST_TIMEOUT
+from .const import MQTT_FROM_VERSION, MQTT_PORT, MQTT_TIMEOUT, REQUEST_TIMEOUT
 from .crypto import open_pack, seal
 
 _LOGGER = logging.getLogger(__name__)
@@ -104,8 +104,9 @@ class MqttLink:
             await self._subscribe(unit.module)
 
     async def _subscribe(self, module: str) -> None:
-        for topic in (f"response/{module}/#", f"status/{module}/#"):
+        for topic in (f"response/{module}/#", f"status/{module}/#", f"connect/{module}"):
             await self._client.subscribe(topic, qos=1)
+        _LOGGER.debug("Subscribed to %s", module)
 
     async def _run(self) -> None:
         backoff = 5
@@ -155,10 +156,14 @@ class MqttLink:
 
     def _received(self, topic: str, payload: bytes | str) -> None:
         parts = topic.split("/")
+        _LOGGER.debug("Message on %s (%s bytes)", topic, len(payload or b""))
         if len(parts) < 2 or parts[0] not in ("response", "status"):
             return
-        unit = self._units.get(parts[1])
+        unit = self._units.get(parts[1]) or next(
+            (known for module, known in self._units.items() if module.lower() == parts[1].lower()), None
+        )
         if unit is None:
+            _LOGGER.debug("Message on %s is for no known unit", topic)
             return
         try:
             outer = json.loads(payload)
@@ -166,10 +171,13 @@ class MqttLink:
         except (ValueError, KeyError, TypeError) as err:
             _LOGGER.debug("Unreadable message on %s: %s", topic, err)
             return
+        _LOGGER.debug("%s sent a %r pack (r=%s) on %s", unit.name, message.get("t"), message.get("r"), parts[0])
         if parts[0] == "response":
             waiting = self._waiting.get(unit.module)
             if waiting and not waiting.done():
                 waiting.set_result(message)
+            else:
+                _LOGGER.debug("%s answered after its request had given up", unit.name)
             return
         values = values_of(message)
         listener = self._listeners.get(unit.mac)
@@ -177,18 +185,19 @@ class MqttLink:
             listener(values)
 
     async def request(self, unit: CloudUnit, message: dict[str, Any], wait: float | None = None) -> dict[str, Any]:
-        timeout = wait or REQUEST_TIMEOUT
         lock = self._locks.setdefault(unit.module, asyncio.Lock())
         async with lock:
             try:
-                await asyncio.wait_for(self._connected.wait(), timeout)
+                await asyncio.wait_for(self._connected.wait(), REQUEST_TIMEOUT)
             except TimeoutError as err:
                 raise LinkError("No MQTT link to the cloud") from err
+            timeout = wait or MQTT_TIMEOUT
             future = asyncio.get_running_loop().create_future()
             self._waiting[unit.module] = future
             try:
                 body = envelope(self._cloud.uid, unit, message, str(secrets.randbelow(9_000_000_000) + 1_000_000_000))
                 await self._client.publish(f"request/{unit.module}", json.dumps(body), qos=1)
+                _LOGGER.debug("Asked %s for %r on request/%s", unit.name, message.get("t"), unit.module)
                 return await asyncio.wait_for(future, timeout)
             except TimeoutError as err:
                 raise LinkError(f"{unit.name} did not answer") from err
@@ -214,6 +223,7 @@ class GatewayLink:
                 raise UnitOffline(f"{unit.name} is offline")
             self._gateways[unit.module] = gateway
         line = json.dumps(envelope(self._cloud.uid, unit, message, "app"), separators=(",", ":")).encode() + b"\n"
+        _LOGGER.debug("Asking %s for %r through %s:%s", unit.name, message.get("t"), gateway.host, gateway.port)
         try:
             reader, writer = await asyncio.wait_for(
                 asyncio.open_connection(gateway.host, gateway.port, ssl=_insecure_tls() if gateway.tls else None),
@@ -236,7 +246,7 @@ class GatewayLink:
                 await writer.wait_closed()
         if not answer:
             self._gateways.pop(unit.module, None)
-            raise LinkError(f"{unit.name} did not answer")
+            raise LinkError(f"The gateway closed the connection without an answer from {unit.name}")
         try:
             outer = json.loads(answer)
             return open_pack(unit.key, outer["pack"]) if outer.get("pack") else outer

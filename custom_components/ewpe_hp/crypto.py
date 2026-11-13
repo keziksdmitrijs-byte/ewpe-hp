@@ -32,8 +32,8 @@ def decrypt(key: bytes, data: bytes) -> bytes:
 
 
 def seal(key: str, message: dict[str, Any]) -> str:
-    """A pack for a unit: its JSON, encrypted with the unit's key, in base64."""
-    return base64.b64encode(encrypt(key.encode(), json.dumps(message, separators=(",", ":")).encode())).decode()
+    """A pack for a unit: its JSON (spaced as the Gree+ app writes it), encrypted with the unit's key, in base64."""
+    return base64.b64encode(encrypt(key.encode(), json.dumps(message).encode())).decode()
 
 
 def open_pack(key: str, pack: str) -> dict[str, Any]:

@@ -128,6 +128,7 @@ async def test_a_silent_unit_is_tried_through_its_gateway(
     entry.add_to_hass(hass)
     with pytest.MonkeyPatch.context() as patch:
         patch.setattr("custom_components.ewpe_hp.link.REQUEST_TIMEOUT", 0.2)
+        patch.setattr("custom_components.ewpe_hp.link.MQTT_TIMEOUT", 0.2)
         assert await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
     assert not entry.runtime_data.units[0].mqtt
@@ -174,4 +175,4 @@ async def test_mqtt_session_uses_the_account(loaded: MockConfigEntry, broker: Br
     settings = broker.connections[0]
     assert settings["hostname"] == "mqtt-eu.gree.com" and settings["port"] == 1984
     assert settings["username"] == "4242" and settings["password"] == "token-1"
-    assert broker.clients[0].subscriptions == [f"response/{MAC}/#", f"status/{MAC}/#"]
+    assert broker.clients[0].subscriptions == [f"response/{MAC}/#", f"status/{MAC}/#", f"connect/{MAC}"]
