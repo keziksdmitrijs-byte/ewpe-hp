@@ -222,6 +222,9 @@ class GatewayLink:
             if gateway is None:
                 raise UnitOffline(f"{unit.name} is offline")
             self._gateways[unit.module] = gateway
+        # through the gateway a status request names the unit inside the pack too, as on the LAN; a command does not
+        if message.get("t") == "status":
+            message = {**message, "mac": unit.mac}
         line = json.dumps(envelope(self._cloud.uid, unit, message, "app"), separators=(",", ":")).encode() + b"\n"
         _LOGGER.debug("Asking %s for %r through %s:%s", unit.name, message.get("t"), gateway.host, gateway.port)
         try:

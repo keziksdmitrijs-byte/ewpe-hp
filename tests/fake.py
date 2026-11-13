@@ -257,8 +257,11 @@ async def gateway_server(cloud: Cloud) -> asyncio.Server:
     async def serve(reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
         line = await reader.readline()
         outer = json.loads(line)
-        if outer["tcid"] == unit.mac and outer["uid"] == UID:
-            answer = unit.answer(open_pack(unit.key, outer["pack"]))
+        message = open_pack(unit.key, outer["pack"])
+        # the gateway passes a status request on only when the pack names the unit
+        named = message["t"] != "status" or message.get("mac") == unit.mac
+        if outer["tcid"] == unit.mac and outer["uid"] == UID and named:
+            answer = unit.answer(message)
             reply = {"t": "pack", "i": 0, "pack": seal(unit.key, answer), "cid": unit.mac, "tcid": "app"}
             writer.write(json.dumps(reply).encode() + b"\n")
             await writer.drain()

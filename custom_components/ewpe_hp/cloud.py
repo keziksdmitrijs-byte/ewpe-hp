@@ -47,6 +47,8 @@ class CloudUnit:
     online: bool = True
     # the Wi-Fi module a unit is behind, when it is not its own
     parent: str | None = None
+    # Gree's type id: 9300 for a Versati
+    kind: str | None = None
 
     @property
     def module(self) -> str:
@@ -54,7 +56,15 @@ class CloudUnit:
 
     def summary(self) -> dict[str, Any]:
         """The unit without its key, for logs and diagnostics."""
-        return {"mac": self.mac, "name": self.name, "model": self.model, "version": self.version, "online": self.online}
+        return {
+            "mac": self.mac,
+            "name": self.name,
+            "model": self.model,
+            "kind": self.kind,
+            "version": self.version,
+            "online": self.online,
+            "parent": self.parent,
+        }
 
 
 @dataclass(frozen=True)
@@ -145,6 +155,7 @@ class Cloud:
                             version=(str(dev["ver"]).strip() or None) if dev.get("ver") else None,
                             online=bool(dev.get("online", 1)),
                             parent=(str(dev.get("pmac") or "").strip() or None),
+                            kind=(str(dev["mid"]).strip() or None) if dev.get("mid") not in (None, "") else None,
                         )
                     )
         modules = {unit.parent for unit in found if unit.parent}
